@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <script src="https://kit.fontawesome.com/9ad79c0b91.js" crossorigin="anonymous"></script>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+#nav{
+    background-color:black;
+    color: white;
+    text-align: center;
+    
+}
+#sai{
+    margin-top: 5%;
+    margin-left: 20%;
+    width: 40%;
+
+}
+#s{
+    height: 25px;
+    width:60% ;
+    border: 1px blue solid;
+}
+button{
+height: 35px;
+font-size: 20px;
+background-color: blue;
+color: white;
+width: 100px;
+}
+#show{
+padding:20%;
+padding-top: 5%;
+}
+</style>
+<body>
+
+    <div id="nav">
+        <h1>Weather App</h1>
+
+    </div>
+    <div id="sai">
+    <input type="text" name="" id="s"  placeholder="City Name" autofocus>
+    <button onclick="w()">submit</button>
+</div>
+    <div id="show"></div>
+</body>
+
+<script>
+    appid = '7b30ba4ee59c22d2983676b258c2e8bd'
+    async function w() {
+        val = document.getElementById("s").value
+        u = `https://api.openweathermap.org/data/2.5/weather?q=${val}&appid=${appid}&lang=hi`
+        try {
+            var data = await fetch(u)
+            var k = await data.json()
+            show(k)
+
+        }
+        catch (err) {
+            show(err)
+            
+        }
+    }
+    function show(k){
+        console.log(k)
+    var div= document.createElement("div")
+    if(k.hasOwnProperty("message")){
+div.innerHTML=`${k.message}`
+    }else{
+       var uk=k.sys.sunrise
+        var rise = new Date(uk*1000);
+        // rise=rise.getUTCHours()
+    
+        console.log(rise)
+
+        uk=k.sys.sunset
+        var date = new Date(uk*1000);
+        // date=date.getUTCHours()
+        console.log(date)
+        div.innerHTML=`
+        <h1> Humidity:${k.main.humidity}%</h1>
+        <h1> Weather:${k.weather[0].main}</h1>
+        <h1> Tempture Min:${k.main.temp_min}Kelvin</h1>
+        <h1>Tempture Max${k.main.temp_max}Kelvin</h1>
+        <h1> Feels like:${k.main.feels_like} Kelvin</h1>
+        <h1> Pressure:${k.main.pressure} hPa</h1>
+        <h1> Wind:${k.wind.speed} KM</h1>
+        <h1> Sunrise :${rise}</h1>
+        <h1> Sunset:${date}</h1>
+        `
+    }
+    
+    document.getElementById("show").append(div)
+}
+
+
+</script>
+
+</html>
